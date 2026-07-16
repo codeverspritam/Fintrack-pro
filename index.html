@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FinTrack Pro — Enterprise Finance</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      (function () {
+        var saved = localStorage.getItem("fintrack-ent-theme") || "dark";
+        document.documentElement.setAttribute("data-theme", saved);
+      })();
+    </script>
+  </head>
+  <body>
+    <!-- ============ LOGIN ============ -->
+    <div class="login-view" id="login-view">
+      <div class="login-card">
+        <div class="login-brand"><span class="mark">₹$</span> FinTrack Pro</div>
+        <p class="login-tag">Enterprise Finance</p>
+
+        <form id="login-form">
+          <div class="field">
+            <label for="login-user">User ID</label>
+            <input
+              type="text"
+              id="login-user"
+              autocomplete="username"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="login-pass">Password</label>
+            <input
+              type="password"
+              id="login-pass"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+          <p class="login-error" id="login-error"></p>
+          <button
+            type="submit"
+            class="btn-gold"
+            style="width: 100%; justify-content: center"
+          >
+            Login
+          </button>
+        </form>
+
+        <p class="login-hint">
+          Demo access — ID <code>therock</code>, password <code>1212</code>
+        </p>
+      </div>
+    </div>
+
+    <!-- ============ APP SHELL ============ -->
+    <div class="app-shell" id="app-shell" hidden>
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <span class="mark">₹$</span> FinTrack Pro
+        </div>
+        <div class="sidebar-sub">Enterprise Finance</div>
+
+        <nav class="nav-group">
+          <button class="nav-item active" data-view="dashboard">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="3" y="3" width="7" height="9" rx="1.5" />
+              <rect x="14" y="3" width="7" height="5" rx="1.5" />
+              <rect x="14" y="12" width="7" height="9" rx="1.5" />
+              <rect x="3" y="16" width="7" height="5" rx="1.5" />
+            </svg>
+            Dashboard
+          </button>
+          <button class="nav-item" data-view="settings">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="3" />
+              <path
+                d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06A1.65 1.65 0 004.6 15a1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.6a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"
+              />
+            </svg>
+            Settings
+          </button>
+        </nav>
+
+        <div class="sidebar-spacer"></div>
+
+        <div class="sidebar-section">
+          <div class="pref-row">
+            <span>Dark Mode</span>
+            <button
+              class="mini-toggle"
+              id="dark-toggle"
+              role="switch"
+              aria-label="Toggle dark mode"
+            >
+              <span class="knob"></span>
+            </button>
+          </div>
+          <button class="sidebar-btn danger" id="reset-data">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M3 6h18M8 6V4a1 1 0 011-1h6a1 1 0 011 1v2m3 0v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6"
+              />
+            </svg>
+            Reset All Data
+          </button>
+          <button class="sidebar-btn" id="logout-btn">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"
+              />
+            </svg>
+            Logout
+          </button>
+        </div>
+      </aside>
+
+      <div class="main">
+        <header class="main-header">
+          <div>
+            <h1 id="page-title">Financial Overview</h1>
+            <p id="page-sub">Real-time tracking application</p>
+          </div>
+          <button class="btn-gold" id="open-add-tx">+ Add Transaction</button>
+        </header>
+
+        <!-- ============ DASHBOARD VIEW ============ -->
+        <section id="dashboard-view">
+          <div class="stat-grid">
+            <div class="stat-card balance">
+              <div class="stat-label">Current Balance</div>
+              <div class="stat-value" id="balance-value">$0.00</div>
+            </div>
+            <div class="stat-card income">
+              <div class="stat-label">Total Income</div>
+              <div class="stat-value" id="income-value">$0.00</div>
+            </div>
+            <div class="stat-card expense">
+              <div class="stat-label">Total Expense</div>
+              <div class="stat-value" id="expense-value">$0.00</div>
+            </div>
+            <div class="stat-card count">
+              <div class="stat-label">Total Transactions</div>
+              <div class="stat-value" id="count-value">0</div>
+            </div>
+          </div>
+
+          <div class="panel chart-panel">
+            <div class="chart-panel-head">
+              <h2 class="panel-title">Cash Flow Analysis</h2>
+            </div>
+            <div id="chart-wrap"></div>
+          </div>
+
+          <div class="panel tx-panel">
+            <div class="tx-panel-head">
+              <h2 class="panel-title">All Transactions</h2>
+              <select class="select-plain" id="filter-select">
+                <option value="all">All Types</option>
+                <option value="income">Income Only</option>
+                <option value="expense">Expense Only</option>
+              </select>
+            </div>
+            <div class="tx-table-wrap">
+              <table class="tx-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="tx-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ============ SETTINGS VIEW ============ -->
+        <section id="settings-view" hidden>
+          <div class="panel">
+            <h2 class="panel-title" style="margin-bottom: 18px">
+              Profile Details
+            </h2>
+            <div class="field">
+              <label for="settings-name">Full Name</label>
+              <input type="text" id="settings-name" placeholder="Your name" />
+            </div>
+            <div class="field">
+              <label for="settings-currency">Primary Currency</label>
+              <select id="settings-currency">
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="INR">INR (₹)</option>
+                <option value="JPY">JPY (¥)</option>
+              </select>
+            </div>
+            <button class="btn-gold" id="save-profile">Save Changes</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- ============ ADD TRANSACTION MODAL ============ -->
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div
+      class="modal"
+      id="tx-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+    >
+      <div class="modal-head">
+        <h2 id="modal-title">Add Transaction</h2>
+        <button class="icon-btn-plain" id="close-modal" aria-label="Close">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M18 6L6 18M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <form id="tx-form">
+        <div class="type-switch">
+          <button type="button" class="type-expense" data-type="expense">
+            Expense
+          </button>
+          <button type="button" class="type-income" data-type="income">
+            Income
+          </button>
+        </div>
+
+        <div class="field">
+          <label for="tx-desc">Description</label>
+          <input
+            type="text"
+            id="tx-desc"
+            placeholder="e.g. Groceries, Paycheck"
+            required
+          />
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="tx-amount">Amount</label>
+            <input
+              type="number"
+              id="tx-amount"
+              placeholder="0.00"
+              min="0.01"
+              step="0.01"
+              required
+            />
+          </div>
+          <div class="field">
+            <label for="tx-date">Date</label>
+            <input type="date" id="tx-date" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="tx-category">Category</label>
+          <select id="tx-category" required></select>
+        </div>
+
+        <button
+          type="submit"
+          class="btn-gold"
+          style="width: 100%; justify-content: center"
+        >
+          Save Transaction
+        </button>
+      </form>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
